@@ -2,9 +2,11 @@ import sys
 import csv
 import math
 
-with open('somewhere_better.txt', 'r') as file:
-    reader = csv.reader(file, delimiter=' ')
-    dataold = list(reader)
+def load_an_proc_data(filename):
+    with open(filename, 'r') as file:
+        reader = csv.reader(file, delimiter=' ')
+        dataold = list(reader)
+
 
 data = [[val for val in sublist if len(val)>0] for sublist in dataold]
 
@@ -40,4 +42,4 @@ print(annual_average(numdata))
 
 
         
-            
+
