@@ -6,23 +6,38 @@ with open('somewhere_better.txt', 'r') as file:
     reader = csv.reader(file, delimiter=' ')
     dataold = list(reader)
 
-
-
-# for i in range(dataold):
-#     for index, val in enumerate(dataold[i]):
-#         if val == '':
-#             del(dataold[i][index])
-
-
-
 data = [[val for val in sublist if len(val)>0] for sublist in dataold]
 
-numdata = [[float(val) if val.isnumeric()==True else val for val in sublist] for sublist in data[7:]]
+numdata = [[float(val) if val.isnumeric() else  val for val in sublist] for sublist in data[7:]]
 
 print(numdata)
 
 def annual_average(numdata):
-    for i in range(len(numdata)):
-        temperature,rain=[],[]
-        if numdata[i] not in year and len(year)=0:
+    Average=[]
+    temperaturemax,temperaturemin,rainfall=[],[],[]
+    temperaturemax.append(numdata[0][2])
+    temperaturemin.append(numdata[0][3])
+    rainfall.append(float(''.join([i for i in numdate[0][6] if i.isdigit()])))
+    for i in range(1,len(numdata)):
+     if numdata[i][0]==numdata[i-1][0]:
+         temperaturemax.append(numdata[i][2])
+         temperaturemin.append(numdata[i][3])
+         rainfall.append(numdate[i][5])
+     else:
+         Average+=[numdata[i-1][0],max(temperaturemax),min(temperaturemin),sum(rainfall)/len(rainfall)]
+         temperaturemax,temperaturemin,rainfall=[],[],[]
+    return Average 
+
+print(annual_average(numdata))
+
+
+
+
+
+
+
+
+
+
+        
             
