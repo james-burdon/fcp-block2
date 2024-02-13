@@ -3,7 +3,7 @@ import csv
 import math
 
 
-#filename = sys.argv[1]
+filename = sys.argv[1]
 
 def load_an_proc_data(filename):
     with open(filename, 'r') as file:
@@ -20,4 +20,4 @@ def base_count(data,base):
 
 # for key, value in base.items():
 #     base[key] = value + 1
-base_count(load_an_proc_data('sequence.fasta'),base)
+print(base_count(load_an_proc_data(filename),base))
