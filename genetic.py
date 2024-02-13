@@ -24,22 +24,24 @@ def base_count(data, base_dict):
 # cytosine (C) with guanine (G)
 
 def complement(seq, reverse=False):
+    complement_seq = ''
     for character in seq:
         if character == 'a':
-            character = 't'
+            newcharacter = 't'
         elif character == 't':
-            character = 'a'
+            newcharacter = 'a'
         elif character == 'c':
-            character = 'g'
+            newcharacter = 'g'
         else:  # does the last one
-            character = 'c'
+            newcharacter = 'c'
+        complement_seq = complement_seq + newcharacter
 
     if reverse == True:
-        seq = seq[::-1]
+        complement_seq = complement_seq[::-1]
 
-    return seq
+    return complement_seq
 
 
 print(base_count(load_an_proc_data('sequence.fasta'), base_dict))
 
-print(complement(load_an_proc_data('sequence.fasta'),True))
+print(complement(load_an_proc_data('sequence.fasta'), True))
