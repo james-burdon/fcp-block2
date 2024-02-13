@@ -44,9 +44,9 @@ def complement(seq, reverse=False):
     return complement_seq
 
 def test_rev_comp():
+    assert complement('ATCG')=='TAGC', "complement test"
     assert complement('ATCG', True)=='CGAT', "reverse complement test"
     print("Tests passed")
-    return
 
 print(base_count(load_an_proc_data('sequence.fasta'), base_dict))
 
