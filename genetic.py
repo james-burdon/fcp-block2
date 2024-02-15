@@ -2,8 +2,6 @@ import sys
 import csv
 import math
 
-
-
 filename = sys.argv[1]
 
 
@@ -43,38 +41,49 @@ def complement(seq, reverse=False):
 
     return complement_seq
 
+
 def test_rev_comp():
-    assert complement('ATCG')=='TAGC', "complement test"
-    assert complement('ATCG', True)=='CGAT', "reverse complement test"
+    assert complement('ATCG') == 'TAGC', "complement test"
+    assert complement('ATCG', True) == 'CGAT', "reverse complement test"
     print("Tests passed")
+
 
 def gc_count(dict):
-    GC=(dict['g']+dict['c'])/(dict['g']+dict['c']+dict['a']+dict['t'])*100
+    GC = (dict['g'] + dict['c']) / (dict['g'] + dict['c'] + dict['a'] + dict['t']) * 100
     return GC
 
+
 def test_gc_content():
-    assert gc_count(base_count('ggggaaaaaaaatttatatatcgcc',base_dict))==0.32, "gc_content test"
+    assert gc_count(base_count('ggggaaaaaaaatttatatatcgcc', base_dict)) == 0.32, "gc_content test"
     print("Tests passed")
+
 
 def detect_cpg_islands(sequence, window_size, gc_threshold):
     cpg_islands = []
-    for i in range(len(sequence)-window_size+1):
-        if gc_count(base_count(sequence[i:i+window_size],base_dict))>gc_threshold:
-            cpg_islands.append(sequence[i:i+window_size])
+    for i in range(len(sequence) - window_size + 1):
+        if gc_count(base_count(sequence[i:i + window_size], base_dict)) > gc_threshold:
+            cpg_islands.append(sequence[i:i + window_size])
     return cpg_islands
+
 
 def main(infile):
     seq = load_an_proc_data(infile)
-    cpg_islands = detect_cpg_islands(seq, window_size=200, gc_threshold=50.0)
-
-
-    # for start, end, elem in cpg_islands:
-    #     print(f"Start: {start}, End: {end}, GC Content: {gc_count(base_count(elem,base_dict)):.2f}%")
-
-print(detect_cpg_islands(load_an_proc_data(filename),200,30))
+    cpg_islands = detect_cpg_islands(seq, window_size=200, gc_threshold=40.0)
+    print("GC Islands:")
+    for start, end, elem in cpg_islands:
+        print(f"Start: {start}, End: {end}, GC Content: {gc_count(base_count(elem,base_dict)):.2f}%")
 
 
 
+main(filename)
 
 
-#print(gc_count(base_count(load_an_proc_data(filename),base_dict)))
+# print(gc_count(base_count(load_an_proc_data(filename),base_dict)))
+
+# for i in range(len(sequence) - window_size + 1):
+#     cpg_islands.append()
+#     if sequence[i:i+window_size]:
+#         if gc_count(sequence[i:i+window_size]):
+#             cpg_islands.append()
+#             if gc_count(sequence[]):
+#                 cpg_islands.append()
