@@ -49,7 +49,29 @@ def test_rev_comp():
     print("Tests passed")
 
 def gc_count(dict):
-    GC=(dict['g']+dict['c'])/(dict['g']+dict['c']+dict['a']+dict['t'])*100
+    GC=(dict['g']+dict['c'])/(dict['g']+dict['c']+dict['a']+dict['t'])
     return GC
 
-print(gc_count(base_count(load_an_proc_data(filename),base_dict)))
+def test_gc_content():
+    assert gc_count(base_count('ggggaaaaaaaatttatatatcgcc',base_dict))==0.32, "gc_content test"
+    print("Tests passed")
+
+def detect_gc_islands(sequence, window_size, gc_threshold):
+    cpg_islands = []
+    #Your code goes here
+    return gc_islands
+
+def main(infile):
+    seq = read_input_file(infile)
+    cpg_islands = detect_cpg_islands(seq, window_size=200, gc_threshold=50.0)
+
+    print("GC Islands:")
+    for start, end, gc_content in cpg_islands:
+        print(f"Start: {start}, End: {end}, GC Content: {gc_content:.2f}%")
+
+
+
+
+# test_gc_content()
+
+#print(gc_count(base_count(load_an_proc_data(filename),base_dict)))
