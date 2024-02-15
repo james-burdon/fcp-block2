@@ -2,7 +2,7 @@ import sys
 import csv
 import math
 
-filename = sys.argv[1]
+filename = 'sequence.fasta'#sys.argv[1]
 
 
 def load_an_proc_data(filename):
@@ -15,9 +15,10 @@ base_dict = {'a': 0, 'c': 0, 't': 0, 'g': 0}
 
 
 def base_count(data, base_dict):
+    new_base_dict = base_dict.copy()
     for i in range(len(data)):
-        base_dict['{}'.format(data[i])] += 1
-    return base_dict
+        new_base_dict['{}'.format(data[i])] += 1
+    return new_base_dict
 
 
 # In DNA, the complementary base pairs are adenine (A) with thymine (T); and
@@ -74,14 +75,12 @@ def detect_cpg_islands(sequence, window_size, gc_threshold):
     return cpg_islands
 
 
-def main(infile, window_size=200, gc_threshold=2):
+def main(infile, window_size=200, gc_threshold=50):
     seq = load_an_proc_data(infile)
     cpg_islands = detect_cpg_islands(seq, window_size, gc_threshold)
     print("GC Islands:")
     for index_key, value in cpg_islands.items():
         print(f"Start: {index_key}, End: {int(index_key)+window_size-1}, GC Content: {gc_count(base_count(value,base_dict)):.2f}%")
-
-input_c, output_c, base_count_c, reverse_compl_c, GC_content_c, no_of_islands_c = 0, 0, 0, 0, 0, 0
 
 
 flags=['--input', '--output', '--base-count', '--reverse-complement', '--GC-content', '--number-of-islands']
@@ -96,8 +95,45 @@ def input():
             Files+=[sys.argv[sys.argv.find('--input')+increment]]
     return Files
 
+def output():
+    if '--output' in sys.argv:
+        assert sys.argv[sys.argv.find('--output') + 1] not in flags, "Please give an output filename"
+        outfile_name = sys.argv[sys.argv.find('--output') + 1]
+        return outfile_name
+    else:
+        return False
+
+def base_count_call(Files):
+    if '--base-count' in sys.argv:
+        base_count_list = []
+        for file in Files:
+            base_count_list.append(base_count(file, base_dict))
+
+    return base_count_list
+
+# main(filename,100,49)
 
 
 
+
+
+
+
+def report():
+    Files = input()
+    # this processes the raw inputted file data
+    for file in Files:
+        file = load_an_proc_data(file)
+
+    # either to be printed to terminal or saved to file...
+    base_count_call(Files)
+
+
+
+
+    if output() != False:
+        outfile_name = output()
+        with open(outfile_name, 'w') as f:
+            f.write(report())
 
 
