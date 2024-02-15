@@ -82,16 +82,31 @@ def main(infile, window_size=200, gc_threshold=2):
         print(f"Start: {index_key}, End: {int(index_key)+window_size-1}, GC Content: {gc_count(base_count(value,base_dict)):.2f}%")
 
 
+def general():
+    input_c, output_c, base_count_c, reverse_compl_c, GC_content_c, no_of_islands_c = 0, 0, 0, 0, 0, 0
 
-main(filename, 3, 49)
+    if '--input' in sys.argv:
+        mo = 1
+        sys.argv.remove('--input')
+
+    if '--output' in sys.argv:
+        me = 1
+        sys.argv.remove('--output')
+
+    if '--base-count' in sys.argv:
+        md = 1
+        sys.argv.remove('--base-count')
+
+    if '--reverse-complement' in sys.argv:
+        mo = 1
+        sys.argv.remove('--reverse-complement')
+
+    if '--GC-content' in sys.argv:
+        me = 1
+        sys.argv.remove('--GC-content')
+
+    if '--number-of-islands' in sys.argv:
+        md = 1
+        sys.argv.remove('--number-of-islands')
 
 
-# print(gc_count(base_count(load_an_proc_data(filename),base_dict)))
-
-# for i in range(len(sequence) - window_size + 1):
-#     cpg_islands.append()
-#     if sequence[i:i+window_size]:
-#         if gc_count(sequence[i:i+window_size]):
-#             cpg_islands.append()
-#             if gc_count(sequence[]):
-#                 cpg_islands.append()
