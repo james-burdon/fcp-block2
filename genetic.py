@@ -81,32 +81,23 @@ def main(infile, window_size=200, gc_threshold=2):
     for index_key, value in cpg_islands.items():
         print(f"Start: {index_key}, End: {int(index_key)+window_size-1}, GC Content: {gc_count(base_count(value,base_dict)):.2f}%")
 
+input_c, output_c, base_count_c, reverse_compl_c, GC_content_c, no_of_islands_c = 0, 0, 0, 0, 0, 0
 
-def general():
-    input_c, output_c, base_count_c, reverse_compl_c, GC_content_c, no_of_islands_c = 0, 0, 0, 0, 0, 0
 
+flags=['--input', '--output', '--base-count', '--reverse-complement', '--GC-content', '--number-of-islands']
+
+def input():
     if '--input' in sys.argv:
-        mo = 1
-        sys.argv.remove('--input')
+        assert sys.argv[sys.argv.find('--input')+1] not in flags, "Please give an input file"
+        increment=0
+        Files=[]
+        while sys.argv[sys.argv.find('--input')+increment] not in flags:
+            increment+=1
+            Files+=[sys.argv[sys.argv.find('--input')+increment]]
+    return Files
 
-    if '--output' in sys.argv:
-        me = 1
-        sys.argv.remove('--output')
 
-    if '--base-count' in sys.argv:
-        md = 1
-        sys.argv.remove('--base-count')
 
-    if '--reverse-complement' in sys.argv:
-        mo = 1
-        sys.argv.remove('--reverse-complement')
 
-    if '--GC-content' in sys.argv:
-        me = 1
-        sys.argv.remove('--GC-content')
-
-    if '--number-of-islands' in sys.argv:
-        md = 1
-        sys.argv.remove('--number-of-islands')
 
 
