@@ -2,7 +2,7 @@ import sys
 import csv
 import math
 
-filename = 'sequence.fasta' #sys.argv[1]
+filename = sys.argv[1]
 
 
 def load_an_proc_data(filename):
