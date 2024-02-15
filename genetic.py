@@ -2,7 +2,7 @@ import sys
 import csv
 import math
 
-filename = sys.argv[1]
+filename = 'sequence.fasta' #sys.argv[1]
 
 
 def load_an_proc_data(filename):
@@ -59,24 +59,24 @@ def test_gc_content():
 
 
 def detect_cpg_islands(sequence, window_size, gc_threshold):
-    cpg_islands = []
-    for i in range(len(sequence) - window_size):
-        if gc_count(base_count(sequence[i:i + window_size-1], base_dict)) > gc_threshold:
-            cpg_islands.append(sequence[i:i + window_size-1])
+    cpg_islands = {}
+    for i in range(len(sequence) - window_size + 1):
+        if gc_count(base_count(sequence[i:i + window_size], base_dict)) > gc_threshold:
+            cpg_islands['{}'.format(i)] = sequence[i:i + window_size]
     return cpg_islands
 
 
-def main(infile):
+def main(infile, window_size=200, gc_threshold=50):
     seq = load_an_proc_data(infile)
-    cpg_islands = detect_cpg_islands(seq, window_size=200, gc_threshold=49)
-    print("GC Islands:", cpg_islands)
-    for start, end, elem in cpg_islands:
-         print(f"Start: {start}, End: {end}, GC Count: {gc_count:.2f}%")
- 
+    cpg_islands = detect_cpg_islands(seq, window_size, gc_threshold)
+    print("GC Islands:")
+    for index_key, value in cpg_islands.items():
+        print(f"Start: {index_key}, End: {int(index_key)+window_size-1}, GC Content: {gc_count(base_count(value,base_dict)):.2f}%")
 
 
 
-main(filename)
+
+main(filename, 200, 49)
 
 
 # print(gc_count(base_count(load_an_proc_data(filename),base_dict)))
