@@ -48,9 +48,8 @@ def test_rev_comp():
     print("Tests passed")
     return
 
-print(base_count(load_an_proc_data('sequence.fasta'), base_dict))
+def gc_count(dict):
+    GC=(dict['g']+dict['c'])/(dict['g']+dict['c']+dict['a']+dict['t'])*100
+    return GC
 
-test_rev_comp()
-
-print(complement(load_an_proc_data('sequence.fasta'), True))
-
+print(gc_count(base_count(load_an_proc_data(filename),base_dict)))
