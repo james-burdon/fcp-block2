@@ -58,6 +58,14 @@ def test_gc_content():
     print("Tests passed")
 
 
+def mean_gc_content(sequence, window_size):
+    list_of_islands = detect_cpg_islands(sequence, window_size, 0)
+    total = 0
+    for i in range(len(list_of_islands)):
+        total += gc_count(base_count(list_of_islands['{}'.format(i)], base_dict))
+    mean_value = total / len(list_of_islands)
+    return mean_value
+
 def detect_cpg_islands(sequence, window_size, gc_threshold):
     cpg_islands = {}
     for i in range(len(sequence) - window_size + 1):
@@ -66,7 +74,7 @@ def detect_cpg_islands(sequence, window_size, gc_threshold):
     return cpg_islands
 
 
-def main(infile, window_size=200, gc_threshold=50):
+def main(infile, window_size=200, gc_threshold=2):
     seq = load_an_proc_data(infile)
     cpg_islands = detect_cpg_islands(seq, window_size, gc_threshold)
     print("GC Islands:")
@@ -75,8 +83,7 @@ def main(infile, window_size=200, gc_threshold=50):
 
 
 
-
-main(filename, 200, 49)
+main(filename, 3, 49)
 
 
 # print(gc_count(base_count(load_an_proc_data(filename),base_dict)))
