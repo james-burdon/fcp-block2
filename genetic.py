@@ -67,11 +67,12 @@ def main(infile):
     seq = load_an_proc_data(infile)
     cpg_islands = detect_cpg_islands(seq, window_size=200, gc_threshold=50.0)
 
-    print("GC Islands:")
-    for start, end, gc_count in cpg_islands:
-        print(f"Start: {start}, End: {end}, GC Content: {gc_count:.2f}%")
 
-main(filename)
+    # for start, end, elem in cpg_islands:
+    #     print(f"Start: {start}, End: {end}, GC Content: {gc_count(base_count(elem,base_dict)):.2f}%")
+
+print(detect_cpg_islands(load_an_proc_data(filename),200,30))
+
 
 
 
