@@ -58,8 +58,16 @@ def test_gc_content():
 
 def detect_gc_islands(sequence, window_size, gc_threshold):
     cpg_islands = []
-    #Your code goes here
-    return gc_islands
+    for i in range(len(sequence) - window_size + 1):
+        cpg_islands.append()
+        if sequence[i:i+window_size]:
+            if gc_count(sequence[i:i+window_size]):
+                cpg_islands.append()
+                if gc_count(sequence[]):
+                    cpg_islands.append()
+
+
+    return cpg_islands
 
 def main(infile):
     seq = read_input_file(infile)
