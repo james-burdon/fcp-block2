@@ -111,46 +111,43 @@ def output():
 
 
 def base_count_call(Files):
-    if '--base-count' in sys.argv:
-        base_count_list = []
-        for file in Files:
-            base_count_list.append(base_count(file, base_dict))
-        return base_count_list
+    base_count_list = []
+    for file in Files:
+        base_count_list.append(base_count(file, base_dict))
+    return base_count_list
 
 
 def reverse_complement(Files):
-    if '--reverse-complement' in sys.argv:
-        reverse_list = []
-        for file in Files:
-            reverse_list.append(complement(file, True)[:50])
-        return reverse_list
+    reverse_list = []
+    for file in Files:
+        reverse_list.append(complement(file, True)[:50])
+    return reverse_list
 
 
 # main(filename,100,49)
 
 
-def GC_content(raw_Files, window_size, gc_multiplier, stuck=False, Pass=False):
-    if '--GC-content' in sys.argv or Pass == True:
-        gc_content_list = []
-        if stuck == True:
-            for raw_file in raw_Files:
-                window_size = len(load_an_proc_data(raw_file))
-                gc_content_list.append(main(raw_file, window_size, gc_multiplier))
-        else:
-            for raw_file in raw_Files:
-                gc_content_list.append(main(raw_file, window_size, gc_multiplier))
-        return gc_content_list
+def GC_content(raw_Files, window_size, gc_multiplier, stuck=False):
+    gc_content_list = []
+    if stuck == True:
+        for raw_file in raw_Files:
+            window_size = len(load_an_proc_data(raw_file))
+            gc_content_list.append(main(raw_file, window_size, gc_multiplier))
+    else:
+        for raw_file in raw_Files:
+            gc_content_list.append(main(raw_file, window_size, gc_multiplier))
+    return gc_content_list
 
 
 def number_of_islands(raw_Files, window_size, gc_multiplier):
-    if '--number-of-islands' in sys.argv:
-        list_of_island_stats = []
-        for i, elem in enumerate(GC_content(raw_Files, window_size, gc_multiplier, Pass=True)):
-            list_of_island_stats.append(f"Input file number: {i + 1}, Number of islands: {len(elem)}")
-        return list_of_island_stats
+    list_of_island_stats = []
+    for i, elem in enumerate(GC_content(raw_Files, window_size, gc_multiplier)):
+        list_of_island_stats.append(f"Input file number: {i + 1}, Number of islands: {len(elem)}")
+    return list_of_island_stats
 
 
 def report():
+
     raw_Files = input()
     # this processes the raw inputted file data
     Files = []
@@ -160,10 +157,14 @@ def report():
     list_of_all_things = []
 
     # either to be printed to terminal or saved to file...
-    list_of_all_things.append(base_count_call(Files))
-    list_of_all_things.append(reverse_complement(Files))
-    list_of_all_things.append(GC_content(input(), 150, 0, True))
-    list_of_all_things.append(number_of_islands(input(), 150, 1.4))
+    if '--base-count' in sys.argv:
+        list_of_all_things.append(base_count_call(Files))
+    if '--reverse-complement' in sys.argv:
+        list_of_all_things.append(reverse_complement(Files))
+    if '--GC-content' in sys.argv :
+        list_of_all_things.append(GC_content(input(), 150, 0, True))
+    if '--number-of-islands' in sys.argv:
+        list_of_all_things.append(number_of_islands(input(), 150, 1.4))
 
     if output() != False:
         outfile_name = output()
