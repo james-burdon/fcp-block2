@@ -171,3 +171,5 @@ def report():
         print(list_of_all_things)
 
     return
+
+report()
