@@ -2,7 +2,7 @@ import sys
 import csv
 import math
 
-filename = sys.argv[1]
+filename = 'sequence.fasta' #sys.argv[1]
 
 
 def load_an_proc_data(filename):
@@ -92,19 +92,19 @@ flags = ['--input', '--output', '--base-count', '--reverse-complement', '--GC-co
 
 def input():
     if '--input' in sys.argv:
-        assert sys.argv[sys.argv.find('--input') + 1] not in flags, "Please give an input file"
-        increment = 0
+        assert sys.argv[sys.argv.index('--input') + 1] not in flags, "Please give an input file"
+        increment = 1
         Files = []
-        while sys.argv[sys.argv.find('--input') + increment] not in flags:
+        while sys.argv[sys.argv.index('--input') + increment] not in flags:
+            Files += [sys.argv[sys.argv.index('--input') + increment]]
             increment += 1
-            Files += [sys.argv[sys.argv.find('--input') + increment]]
     return Files
 
 
 def output():
     if '--output' in sys.argv:
-        assert sys.argv[sys.argv.find('--output') + 1] not in flags, "Please give an output filename"
-        outfile_name = sys.argv[sys.argv.find('--output') + 1]
+        assert sys.argv[sys.argv.index('--output') + 1] not in flags, "Please give an output filename"
+        outfile_name = sys.argv[sys.argv.index('--output') + 1]
         return outfile_name
     else:
         return False
@@ -115,7 +115,7 @@ def base_count_call(Files):
         base_count_list = []
         for file in Files:
             base_count_list.append(base_count(file, base_dict))
-    return base_count_list
+        return base_count_list
 
 
 def reverse_complement(Files):
@@ -123,53 +123,60 @@ def reverse_complement(Files):
         reverse_list = []
         for file in Files:
             reverse_list.append(complement(file, True)[:50])
-    return reverse_list
+        return reverse_list
 
 
 # main(filename,100,49)
 
 
-def GC_content(raw_Files, Files, window_size, gc_multiplier, stuck=False):
-    if '--GC-content' in sys.argv:
+def GC_content(raw_Files, window_size, gc_multiplier, stuck=False, Pass=False):
+    if '--GC-content' in sys.argv or Pass == True:
         gc_content_list = []
         if stuck == True:
-            for raw_file, file in raw_Files, Files:
-                gc_content_list.append(main(raw_file, gc_multiplier, window_size=len(file)))
+            for raw_file in raw_Files:
+                window_size = len(load_an_proc_data(raw_file))
+                gc_content_list.append(main(raw_file, window_size, gc_multiplier))
         else:
             for raw_file in raw_Files:
                 gc_content_list.append(main(raw_file, window_size, gc_multiplier))
         return gc_content_list
 
 
-def number_of_islands(raw_Files, Files, window_size, gc_multiplier):
-    list_of_island_stats = []
-    for i, elem in enumerate(GC_content(raw_Files, Files, window_size, gc_multiplier)):
-        list_of_island_stats.append(f"Input file number: {i+1}, Number of islands: {len(elem)}")
-    return list_of_island_stats
+def number_of_islands(raw_Files, window_size, gc_multiplier):
+    if '--number-of-islands' in sys.argv:
+        list_of_island_stats = []
+        for i, elem in enumerate(GC_content(raw_Files, window_size, gc_multiplier, Pass=True)):
+            list_of_island_stats.append(f"Input file number: {i + 1}, Number of islands: {len(elem)}")
+        return list_of_island_stats
 
 
 def report():
-    Files = input()
+    raw_Files = input()
     # this processes the raw inputted file data
-    for file in Files:
-        file = load_an_proc_data(file)
+    Files = []
+    for raw_file in raw_Files:
+        Files.append(load_an_proc_data(raw_file))
 
     list_of_all_things = []
 
     # either to be printed to terminal or saved to file...
     list_of_all_things.append(base_count_call(Files))
     list_of_all_things.append(reverse_complement(Files))
-    list_of_all_things.append(GC_content(input(), Files, 150, 1.5, True))
-    list_of_all_things.append(number_of_islands(input(), Files, 150, 1.5))
-
+    list_of_all_things.append(GC_content(input(), 150, 0, True))
+    list_of_all_things.append(number_of_islands(input(), 150, 1.4))
 
     if output() != False:
         outfile_name = output()
-        with open(outfile_name, 'w') as f:
-            f.write(list_of_all_things)
+        with open(f'{outfile_name}.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(list_of_all_things)
     else:
         print(list_of_all_things)
 
     return
 
+
 report()
+# print(base_count(load_an_proc_data(filename),base_dict))
+# for file in input():
+#     print(base_count_call(load_an_proc_data(file),base_dict))
